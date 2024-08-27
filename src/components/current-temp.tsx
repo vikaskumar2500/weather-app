@@ -21,8 +21,8 @@ export const CurrentTemp = ({
   const { isCelsius, handleCelsius } = useForecast();
   const countryName = getName(country || "");
   return (
-    <div className="flex flex-col md:flex-row items-center space-x-2 w-full justify-between">
-      <div className="flex flex-row w-full justify-start items-center py-5">
+    <div className="flex flex-col md:flex-row items-center space-x-2 w-full justify-center md:justify-between">
+      <div className="flex flex-row w-full justify-center md:justify-start items-center py-5">
         <img
           src={`https://openweathermap.org/img/wn/${icon}.png`}
           alt="weather icon"
@@ -41,7 +41,9 @@ export const CurrentTemp = ({
           >
             <button
               title="Celsius"
-              className={`${isCelsius ? "scale-150 font-bold" : "font-normal text-xs"}`}
+              className={`${
+                isCelsius ? "scale-150 font-bold" : "font-normal text-xs"
+              }`}
               onClick={() => handleCelsius(true)}
             >
               <TbTemperatureCelsius size={20} />
@@ -49,7 +51,9 @@ export const CurrentTemp = ({
             <div className="h-6 w-[1px] bg-white" />
             <button
               title="Fahrenheit"
-              className={`${!isCelsius ? "scale-150 font-bold" : "font-normal text-xs"}`}
+              className={`${
+                !isCelsius ? "scale-150 font-bold" : "font-normal text-xs"
+              }`}
               onClick={() => handleCelsius(false)}
             >
               <TbTemperatureFahrenheit size={20} />

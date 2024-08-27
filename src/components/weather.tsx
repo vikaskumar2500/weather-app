@@ -1,17 +1,35 @@
-import { Type, useFetcher } from "@/hooks/use-fetcher";
+import { Type } from "@/hooks/use-fetcher";
 import { useForecast } from "@/hooks/use-forecast";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CurrentTemp } from "./current-temp";
 import { Loading } from "./loading";
 import { getWindDirection } from "@/lib/wind-direction";
+import { fetcher } from "@/lib/fetcher";
 
 const Weather = () => {
   const { isCelsius, searchProps } = useForecast();
+  const [data, setData] = useState<any[]>([]);
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const { data, error, isLoading } = useFetcher({
-    ...searchProps,
-    type: Type.WEATHER,
-  });
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const res = await fetcher({
+          ...searchProps,
+          type: Type.WEATHER,
+        });
+        const data = res.data;
+        setData(() => [data]);
+        setError(null);
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [searchProps]);
 
   const weatherData = useMemo(
     () => [
@@ -44,7 +62,7 @@ const Weather = () => {
         value: data[0]?.weather?.[0]?.description || "N/A",
       },
     ],
-    [data, searchProps, isCelsius]
+    [data, isCelsius]
   );
 
   const temp = isCelsius
@@ -69,8 +87,8 @@ const Weather = () => {
                 key={idx}
                 className="flex flex-row items-center justify-between"
               >
-                <p className="text-muted">{data.name}</p>
-                <span className="font-semibold">{data.value}</span>
+                <p className="text-muted">{data?.name}</p>
+                <span className="font-semibold">{data?.value}</span>
               </li>
             ))}
           </ul>

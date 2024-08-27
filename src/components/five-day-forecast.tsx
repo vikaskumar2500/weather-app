@@ -1,10 +1,10 @@
 import { useForecast } from "@/hooks/use-forecast";
 
-import { Type, useFetcher } from "@/hooks/use-fetcher";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TiWeatherCloudy } from "react-icons/ti";
 import { Loading } from "./loading";
 import { formatDate } from "@/lib/format-date";
+import { fetcher, Type } from "@/lib/fetcher";
 
 interface ForecastDataProps {
   date: string;
@@ -14,12 +14,32 @@ interface ForecastDataProps {
 }
 
 const FiveDayForecast = () => {
+  const [data, setData] = useState<any[]>([]);
+  const [isLoading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const { isCelsius, searchProps } = useForecast();
 
-  const { data, error, isLoading } = useFetcher({
-    ...searchProps,
-    type: Type.FORECAST,
-  });
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const res = await fetcher({
+          ...searchProps,
+          type: Type.FORECAST,
+        });
+        const data = res.data;
+        setData(() => [data]);
+        setError(null);
+      } catch (e: any) {
+        setError(e.message);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [searchProps]);
+
+
   const mappedData: ForecastDataProps[] = useMemo(
     () =>
       data[0]?.list
@@ -30,10 +50,10 @@ const FiveDayForecast = () => {
           icon: item.weather[0].icon,
           temp_avg: +((item.main.temp_max + item.main.temp_min) / 2),
         })) || [],
-    [data, searchProps]
+    [data, isCelsius]
   );
 
-  if (error) return null;
+  if(error) return null;
 
   return (
     <ul className="flex flex-wrap gap-5 items-center justify-center text-transparent/30">

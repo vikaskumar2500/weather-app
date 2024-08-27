@@ -26,7 +26,6 @@ export const useFetcher = ({
   const [data, setData] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setLoading] = useState(false);
-  console.log("data", data);
   useEffect(() => {
     const fetcher = async () => {
       try {
@@ -62,6 +61,6 @@ export const useFetcher = ({
       }
     };
     fetcher();
-  }, [lat, lon, city, zip, country]);
+  }, [lat, lon, type, city, zip, country]);
   return { isLoading, data, error };
 };

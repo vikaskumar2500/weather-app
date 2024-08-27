@@ -1,5 +1,5 @@
 import FiveDayForecast from "./components/five-day-forecast";
-import Header from "./components/header";
+import { Header } from "./components/header";
 import Weather from "./components/weather";
 
 function App() {
@@ -8,12 +8,9 @@ function App() {
       <Header />
       <section className="flex flex-col gap-5 items-center text-center">
         <Weather />
-        <div className="flex flex-col gap-5 text-gray-50 font-bold">
-          <h2>Five Days Forecast</h2>
-          <hr className="h-1 w-full" />
-          <FiveDayForecast />
-        </div>
+        <FiveDayForecast />
       </section>
+      
     </main>
   );
 }

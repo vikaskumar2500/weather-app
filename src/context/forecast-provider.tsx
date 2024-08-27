@@ -35,9 +35,9 @@ const ForecastProvider = ({ children }: ForecastProviderProps) => {
         lon: Number(pos.coords.longitude.toFixed(2)),
       });
     });
-    return () => {
-      navigator.geolocation.clearWatch;
-    };
+    // return () => {
+    //   navigator.geolocation.clearWatch;
+    // };
   }, []);
   const handleCelsius = (isTrue: boolean) => setIsCelsius(isTrue);
   const handleSearchProps = (data: SearchProps) => setSearchProps(data);
