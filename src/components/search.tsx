@@ -74,7 +74,7 @@ const Search = () => {
           id="search"
           {...register("search")}
           className="h-12 rounded-full pl-11 pr-10 flex text-start justify-center font-semibold placeholder:font-normal placeholder:text-muted-foreground placeholder:text-base"
-          placeholder="search by city & zip code"
+          placeholder="Search by city & zip code"
           errors={errors.search}
         />
         <button
